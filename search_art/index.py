@@ -24,14 +24,30 @@ def init_local_index(index_dir:str=INDEX_DIR):
 def write_test_data(ix: FileIndex):
   writer = ix.writer()
 
-  text = u"あいうえお" * 3
-  for i in range(len(text)):
-    writer.add_document(
-      artId=u"/b",
-      title=text[0:i],
-      description=text[0:i]*3,
-      tags=[],
-    )
+  writer.add_document(
+    artId=u"test-art-1",
+    title="キメツのやばい",
+    description="キメツのやばい" * 10,
+    tags=["アクション", "アニメ", "アニメ映画", "バトル", "マンガ", "少年マンガ", "週刊少年ジャンプ"],
+  )
+  writer.add_document(
+    artId=u"test-art-2",
+    title="ジュルジュル回線",
+    description="ジュルジュル回線" * 10,
+    tags=["アニメ", "アニメ映画", "バトル", "マンガ", "少年マンガ"],
+  )
+  writer.add_document(
+    artId=u"/test-art-3",
+    title="きっとマヨネーズでいいのに。",
+    description="きっとマヨネーズでいいのに。" * 10,
+    tags=["J-POP", "アーティスト", "ジャズ", "ロック"],
+  )
+  writer.add_document(
+    artId=u"/test-art-4",
+    title="俺の名は。",
+    description="俺の名は。" * 10,
+    tags=["RADWIMPS", "アニメ映画", "古海誠", "映画"],
+  )
   writer.commit()
 
 def get_index():
