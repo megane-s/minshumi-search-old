@@ -1,4 +1,3 @@
-from functools import cache
 import os, os.path as path
 from whoosh.index import create_in, FileIndex
 
@@ -16,7 +15,7 @@ def init_local_index(index_dir:str=INDEX_DIR):
   print(":: init_local_index")
   if path.exists(index_dir):
     shutil.rmtree(index_dir)
-  os.mkdir(index_dir)
+  os.makedirs(index_dir)
 
   global _index
   _index = create_in(INDEX_DIR, get_schema())
