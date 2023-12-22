@@ -31,3 +31,10 @@ archive.zip
 
 # indices
 indices
+
+# GCP
+secret
+
+.env
+
+tmp
