@@ -7,10 +7,10 @@ import shutil
 from whoosh.qparser import QueryParser
 from time import time
 from whoosh import scoring
+from search_art.settings import INDEX_DIR
 
 from search_art.shared_index import load_art_shared_search_index
 
-INDEX_DIR = "indices/art_index"
 _index :FileIndex | None = None
 
 def init_local_index(index_dir:str=INDEX_DIR):

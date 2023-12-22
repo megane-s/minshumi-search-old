@@ -4,8 +4,8 @@ from pathlib import Path
 
 from util.env import get_env, load_env
 
-from .index import INDEX_DIR
-from shutil import unpack_archive, make_archive, rmtree
+from search_art.settings import INDEX_DIR
+from shutil import unpack_archive, make_archive
 from uuid import uuid4
 import os
 import time
@@ -57,6 +57,7 @@ def update_art_shared_search_index(retry_count=0):
       update_art_shared_search_index(retry_count=retry_count+1)
     zip_blob.upload_from_string("")
     zip_blob.metadata["locked"] = "YES"
+    time.sleep(5)
 
     # ZIPに固める
     id = uuid4().hex
