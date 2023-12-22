@@ -10,6 +10,8 @@ from uuid import uuid4
 import os
 import time
 
+import logging
+
 load_env()
 
 storage_client = storage.Client()
@@ -31,6 +33,7 @@ def load_art_shared_search_index():
     unpack_archive(zip_local, INDEX_DIR, format=ARCHIVE_FORMAT)
   except Exception as e:
     print(e)
+    logging.error(e, stack_info=True)
 
   # TODO クリーンアップ
   if zip_local is not None:
@@ -50,13 +53,12 @@ def update_art_shared_search_index(retry_count=0):
   try:
     # TODO ロック中は1秒待ってから再度リトライ
     zip_blob :Blob = bucket.blob(INDEX_DIR)
-    print(zip_blob.metadata["locked"])
-    if zip_blob.exists() and zip_blob.metadata["locked"] == "YES":
+    if zip_blob.exists() and zip_blob.metadata is not None and zip_blob.metadata["locked"] == "YES":
       print("shared_search_index is locked . retry after 1sec")
       time.sleep(1)
       update_art_shared_search_index(retry_count=retry_count+1)
     zip_blob.upload_from_string("")
-    zip_blob.metadata["locked"] = "YES"
+    zip_blob.metadata = {"locked": "YES"}
     time.sleep(5)
 
     # ZIPに固める
@@ -69,10 +71,14 @@ def update_art_shared_search_index(retry_count=0):
     zip_blob.upload_from_filename(zip_local_path)
   except Exception as e:
     print(e)
+    logging.error(e, stack_info=True)
 
   # クリーンアップ
   if zip_local is not None:
     os.remove(str(zip_local) + ".zip")
-  if zip_blob is not None:
+  if all([
+    zip_blob is not None,
+    zip_blob.metadata is not None,
+  ]):
     zip_blob.metadata["locked"] = "NO"
 
