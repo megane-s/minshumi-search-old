@@ -1,10 +1,10 @@
 steps:
   # Build the container image
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-t", "gcr.io/megane-s-gcp/IMAGE", "."]
+    args: ["build", "-t", "gcr.io/megane-s-gcp/minshumi-search", "."]
   # Push the container image to Container Registry
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "gcr.io/megane-s-gcp/IMAGE"]
+    args: ["push", "gcr.io/megane-s-gcp/minshumi-search"]
   # Deploy container image to Cloud Run
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
@@ -14,11 +14,11 @@ steps:
         "deploy",
         "minshumi-search",
         "--image",
-        "gcr.io/megane-s-gcp/IMAGE",
+        "gcr.io/megane-s-gcp/minshumi-search",
         "--region",
-        "REGION",
+        "asia-northeast1",
         "--memory",
         "1024Mi",
       ]
 images:
-  - gcr.io/megane-s-gcp/IMAGE
+  - gcr.io/megane-s-gcp/minshumi-search
